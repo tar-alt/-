@@ -2,106 +2,432 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <title>Slot Machine - ရှမ်းကိုးမီး အပေါက်စက်</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>6-Reel Slot Machine – ရှမ်းကိုးမီး</title>
     <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
         body {
-            background: linear-gradient(145deg, #1e2a2e, #0f1a1f);
+            background: linear-gradient(145deg, #0b2b1f, #05140e);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: system-ui;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            padding: 20px;
+            margin: 0;
         }
-        .slot-container {
-            background: #2c2118;
-            padding: 30px;
-            border-radius: 60px;
-            box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+
+        .slot-machine {
+            background: #2a2418;
+            border-radius: 70px;
+            padding: 30px 20px 40px;
+            box-shadow: 0 30px 35px rgba(0,0,0,0.6), inset 0 1px 3px rgba(255,255,200,0.2);
+            max-width: 950px;
+            width: 100%;
+        }
+
+        h1 {
             text-align: center;
+            margin: 0 0 5px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #ffd966, #ffaa33);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
-        .reels {
+
+        .credit-panel {
+            background: #1f1a10;
+            border-radius: 50px;
+            padding: 8px 20px;
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 25px 0;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #ffecb3;
+            font-weight: bold;
         }
+
+        .credit-box {
+            background: black;
+            padding: 5px 20px;
+            border-radius: 40px;
+            font-size: 1.6rem;
+            font-family: monospace;
+            letter-spacing: 2px;
+            color: #ffdd88;
+        }
+
+        .bet-selector {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .bet-btn {
+            background: #3a2a1c;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 6px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #f3cf7a;
+            transition: 0.07s linear;
+            box-shadow: 0 2px 5px black;
+        }
+
+        .bet-btn.active {
+            background: #f0a500;
+            color: #2c1b0a;
+            box-shadow: 0 0 6px gold;
+        }
+
+        .reels-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
         .reel {
-            background: #fff2df;
-            width: 110px;
-            height: 130px;
+            background: #fff6e5;
+            width: 90px;
+            height: 120px;
             border-radius: 24px;
-            font-size: 4rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: inset 0 0 0 3px #e4b363, 0 8px 15px black;
+            font-size: 3.8rem;
             font-weight: bold;
+            box-shadow: inset 0 0 0 4px #efc27d, 0 12px 18px black;
+            transition: all 0.08s linear;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
         }
-        button {
-            background: #f39c12;
-            font-size: 1.8rem;
+
+        .spin-btn {
+            background: #e67e22;
+            font-size: 2rem;
             font-weight: bold;
             border: none;
+            width: 90%;
+            max-width: 320px;
+            padding: 12px 20px;
             border-radius: 60px;
-            padding: 12px 35px;
             cursor: pointer;
+            display: block;
+            margin: 15px auto;
             transition: 0.05s linear;
-            box-shadow: 0 6px 0 #b45f1b;
+            box-shadow: 0 7px 0 #b45f1b;
+            color: #2e1d0a;
         }
-        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #b45f1b; }
-        .result {
-            background: black;
-            color: gold;
-            padding: 12px;
-            border-radius: 48px;
-            margin-top: 20px;
+
+        .spin-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #b45f1b;
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .message-area {
+            background: #1e1a10;
+            border-radius: 50px;
+            padding: 12px 18px;
+            text-align: center;
+            color: #f5d742;
             font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #bba87a;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 680px) {
+            .reel {
+                width: 65px;
+                height: 90px;
+                font-size: 2.5rem;
+            }
+            .credit-box {
+                font-size: 1.2rem;
+            }
+            .bet-btn {
+                font-size: 0.9rem;
+                padding: 4px 12px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="slot-container">
-    <h2 style="color:#ffdd99;">🎰 ရှမ်းကိုးမီး Slot 🎰</h2>
-    <div class="reels">
-        <div class="reel" id="reel1">🍒</div>
-        <div class="reel" id="reel2">🍒</div>
-        <div class="reel" id="reel3">🍒</div>
+<div class="slot-machine">
+    <h1>🎰 6‑ကွက် ရှမ်းကိုးမီး Slot 🎰</h1>
+
+    <div class="credit-panel">
+        <div>💰 လက်ကျန်ငွေ</div>
+        <div class="credit-box" id="creditDisplay">2000</div>
+        <div class="bet-selector">
+            <span>🎲 ကြေး:</span>
+            <button class="bet-btn" data-bet="10">10</button>
+            <button class="bet-btn" data-bet="50">50</button>
+            <button class="bet-btn active" data-bet="100">100</button>
+            <button class="bet-btn" data-bet="500">500</button>
+        </div>
     </div>
-    <button id="spinBtn">🌀 လှည့်မယ် 🌀</button>
-    <div class="result" id="resultMsg">ခလုတ်နှိပ်ပါ</div>
+
+    <div class="reels-container" id="reelsContainer">
+        <!-- 6 reels will be injected by JS -->
+    </div>
+
+    <button class="spin-btn" id="spinBtn">🌀 လှည့်မယ် (တစ်ကွက်ချင်းရပ်) 🌀</button>
+    <div class="message-area" id="messageBox">ကြေးရွေးပြီး လှည့်ပါ</div>
+    <footer>※ တူညီသင်္ကေတ ≥3 လုံးတွဲ → ဆုရမည်။ 6 လုံးတူဆု ကြီးမား</footer>
 </div>
+
 <script>
-    const symbols = ["🍒", "🍋", "🍊", "7️⃣", "💎", "🔔"];
-    const payouts = {
-        "🍒🍒🍒": 50,
-        "🍋🍋🍋": 40,
-        "🍊🍊🍊": 40,
-        "7️⃣7️⃣7️⃣": 200,
-        "💎💎💎": 150,
-        "🔔🔔🔔": 60,
-        // two same
-    };
-    function getRandomSymbol() {
-        return symbols[Math.floor(Math.random() * symbols.length)];
+    // ---------- Slot Symbols ----------
+    const SYMBOLS = ["🍒", "🍋", "🍊", "7️⃣", "💎", "🔔"];
+    const SYMBOL_NAMES = ["Cherry", "Lemon", "Orange", "Seven", "Diamond", "Bell"];
+
+    // Paytable: pattern => multiplier (based on bet)
+    // For simplicity: number of identical symbols (from left to right? we'll check entire set)
+    // We'll compute: count of each symbol, then reward based on longest run? Better: count how many of the same symbol appear.
+    // But real slot uses paylines. We'll do: if any symbol appears 3,4,5,6 times -> win.
+    // Also special "7️⃣" has higher multiplier.
+    function calculateWin(symbols, bet) {
+        let counts = {};
+        for (let s of symbols) {
+            counts[s] = (counts[s] || 0) + 1;
+        }
+        let maxCount = 0;
+        let bestSymbol = null;
+        for (let [sym, cnt] of Object.entries(counts)) {
+            if (cnt > maxCount) {
+                maxCount = cnt;
+                bestSymbol = sym;
+            }
+        }
+        if (maxCount < 3) return 0;
+
+        let multiplier = 0;
+        // Base multiplier by count
+        if (maxCount === 3) multiplier = 2;
+        else if (maxCount === 4) multiplier = 5;
+        else if (maxCount === 5) multiplier = 15;
+        else if (maxCount === 6) multiplier = 50;
+
+        // Bonus for rare symbols
+        if (bestSymbol === "7️⃣") multiplier *= 2;
+        if (bestSymbol === "💎") multiplier = Math.floor(multiplier * 1.5);
+
+        return bet * multiplier;
     }
+
+    // Game state
+    let credits = 2000;
+    let currentBet = 100;   // default
+    let isSpinning = false;
+    let reelsCount = 6;
+    let reelSymbols = [];     // store current symbols shown
+    let reelElements = [];
+    let spinInterval = null;
+    let currentReelIndex = 0;
+
+    const creditDisplay = document.getElementById('creditDisplay');
+    const messageBox = document.getElementById('messageBox');
+    const spinBtn = document.getElementById('spinBtn');
+
+    // Initialize DOM: create 6 reels
+    function buildReels() {
+        const container = document.getElementById('reelsContainer');
+        container.innerHTML = '';
+        reelElements = [];
+        for (let i = 0; i < reelsCount; i++) {
+            const reelDiv = document.createElement('div');
+            reelDiv.className = 'reel';
+            reelDiv.id = `reel_${i}`;
+            reelDiv.textContent = SYMBOLS[0];  // default cherry
+            container.appendChild(reelDiv);
+            reelElements.push(reelDiv);
+        }
+    }
+
+    // Update all reels UI from reelSymbols array
+    function updateReelsUI() {
+        for (let i = 0; i < reelsCount; i++) {
+            if (reelSymbols[i] !== undefined) {
+                reelElements[i].textContent = reelSymbols[i];
+            }
+        }
+    }
+
+    // Random symbol
+    function randomSymbol() {
+        return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    }
+
+    // Animate one reel (fast random change, then stop on finalSymbol)
+    function animateReelStop(reelIndex, finalSymbol, durationMs = 200, steps = 12) {
+        return new Promise((resolve) => {
+            const reelDiv = reelElements[reelIndex];
+            let step = 0;
+            const interval = setInterval(() => {
+                // show random symbol during animation
+                reelDiv.textContent = randomSymbol();
+                step++;
+                if (step >= steps) {
+                    clearInterval(interval);
+                    reelDiv.textContent = finalSymbol;
+                    resolve();
+                }
+            }, durationMs / steps);
+        });
+    }
+
+    // Sequential spin: stop one by one
+    async function startSequentialSpin(finalSymbols) {
+        for (let i = 0; i < reelsCount; i++) {
+            // animate current reel
+            await animateReelStop(i, finalSymbols[i], 180, 10);
+            // small delay between reels
+            await new Promise(r => setTimeout(r, 80));
+        }
+        // all stopped
+        reelSymbols = [...finalSymbols];
+        updateReelsUI();
+
+        // calculate win
+        const winAmount = calculateWin(reelSymbols, currentBet);
+        if (winAmount > 0) {
+            credits += winAmount;
+            messageBox.innerHTML = `🎉 အနိုင်! ရရှိငွေ ${winAmount} 🎉 (${reelSymbols.join(' ')})`;
+        } else {
+            messageBox.innerHTML = `😞 မအောင်။ နောက်တစ်ခါ ကံစမ်းပါ။ (${reelSymbols.join(' ')})`;
+        }
+        updateCreditUI();
+
+        isSpinning = false;
+        spinBtn.disabled = false;
+        if (credits <= 0) {
+            messageBox.innerHTML = "💰 ငွေကုန်သွားပြီ။ စာမျက်နှာ refresh လုပ်ပါ။ 💰";
+            spinBtn.disabled = true;
+        }
+    }
+
+    // Main spin action
     function spin() {
-        let s1 = getRandomSymbol();
-        let s2 = getRandomSymbol();
-        let s3 = getRandomSymbol();
-        document.getElementById("reel1").innerText = s1;
-        document.getElementById("reel2").innerText = s2;
-        document.getElementById("reel3").innerText = s3;
-        let key = s1+s2+s3;
-        let prize = 0;
-        if(payouts[key]) prize = payouts[key];
-        else if(s1 === s2 && s2 !== s3) prize = 10;
-        else if(s2 === s3 && s1 !== s2) prize = 10;
-        else if(s1 === s3 && s1 !== s2) prize = 10;
-        else prize = 0;
-        if(prize > 0) document.getElementById("resultMsg").innerHTML = `🎉 ဆုရသည် ${prize} အမှတ် 🎉`;
-        else document.getElementById("resultMsg").innerHTML = "😢 နောက်တစ်ခါ ကံစမ်းပါ";
+        if (isSpinning) {
+            messageBox.innerHTML = "ခေတ္တစောင့်ပါ... လှည့်နေဆဲ။";
+            return;
+        }
+        if (credits < currentBet) {
+            messageBox.innerHTML = `လက်ကျန်ငွေ မလုံလောက်ပါ။ လိုအပ်: ${currentBet}`;
+            return;
+        }
+
+        isSpinning = true;
+        spinBtn.disabled = true;
+
+        // deduct bet
+        credits -= currentBet;
+        updateCreditUI();
+
+        // generate final symbols (random)
+        const finalSymbols = [];
+        for (let i = 0; i < reelsCount; i++) {
+            finalSymbols.push(randomSymbol());
+        }
+
+        // start fast spinning on all reels first? Actually we want them all spinning, then stop sequentially.
+        // Better: start all reels spinning fast, then stop one by one.
+        // We'll start an interval that randomly updates all reels rapidly, then clear and stop sequentially.
+        let fastSpinInterval = setInterval(() => {
+            for (let i = 0; i < reelsCount; i++) {
+                if (reelElements[i]) reelElements[i].textContent = randomSymbol();
+            }
+        }, 50);
+
+        // after a short "all spinning" effect, begin sequential stop
+        setTimeout(() => {
+            clearInterval(fastSpinInterval);
+            // now start sequential stop with predetermined final symbols
+            startSequentialSpin(finalSymbols);
+        }, 300);
     }
-    document.getElementById("spinBtn").onclick = spin;
+
+    function updateCreditUI() {
+        creditDisplay.innerText = credits;
+    }
+
+    // Bet selector
+    function initBetButtons() {
+        const btns = document.querySelectorAll('.bet-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (isSpinning) return;
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentBet = parseInt(btn.getAttribute('data-bet'), 10);
+                messageBox.innerHTML = `ကြေး ${currentBet} ရွေးထားပါသည်။`;
+            });
+        });
+    }
+
+    // initial random symbols
+    function randomInit() {
+        reelSymbols = [];
+        for (let i=0; i<reelsCount; i++) {
+            reelSymbols.push(randomSymbol());
+        }
+        updateReelsUI();
+    }
+
+    // restart manually if credits zero (refresh hack)
+    function checkCredit() {
+        if (credits <= 0) {
+            if (confirm("ငွေကုန်သွားပြီ။ ပြန်စမလား?")) {
+                credits = 2000;
+                currentBet = 100;
+                updateCreditUI();
+                randomInit();
+                messageBox.innerHTML = "ပြန်စပြီ။ ကြေးရွေးပါ။";
+                spinBtn.disabled = false;
+                isSpinning = false;
+                // reset active bet
+                document.querySelectorAll('.bet-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.bet-btn[data-bet="100"]').classList.add('active');
+            }
+        }
+    }
+
+    // Add event listener to spin button
+    spinBtn.addEventListener('click', () => {
+        spin();
+        setTimeout(checkCredit, 500);
+    });
+
+    // Build UI
+    buildReels();
+    randomInit();
+    initBetButtons();
+    updateCreditUI();
+    messageBox.innerHTML = "ကြေးရွေးပြီး လှည့်ပါ (တစ်ကွက်ချင်း ရပ်မယ်)";
 </script>
 </body>
 </html>
