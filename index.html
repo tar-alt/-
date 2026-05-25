@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ShanKoeMee - သျှမ်းကိုးမီးဂိမ်း</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: linear-gradient(145deg, #1a472a 0%, #0e2a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', 'Myanmar Text', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            background: rgba(0,0,0,0.55);
+            border-radius: 80px 80px 60px 60px;
+            padding: 25px 20px 35px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
+            backdrop-filter: blur(3px);
+        }
+        .game-panel {
+            background: #fdf8e7;
+            border-radius: 60px;
+            padding: 30px 25px 35px;
+            box-shadow: inset 0 0 0 2px #ffefb9, 0 20px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #c78a2b, #f5b642);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+        .sub {
+            color: #5c3e1b;
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            background: #ecdca8;
+            display: inline-block;
+            padding: 4px 20px;
+            border-radius: 40px;
+        }
+        .dice-area {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 20px 0 30px;
+        }
+        .dice {
+            background: white;
+            width: 100px;
+            height: 100px;
+            border-radius: 28px;
+            box-shadow: 0 12px 18px rgba(0,0,0,0.3), inset 0 1px 4px rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            font-weight: bold;
+            transition: all 0.15s ease;
+            background: #fff5e3;
+            border: 1px solid #c29a5b;
+        }
+        .roll-btn {
+            background: #ffb347;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 12px 32px;
+            border-radius: 60px;
+            color: #3c280e;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #a45d23;
+            transition: 0.07s linear;
+            font-family: inherit;
+            margin: 15px 0 10px;
+            width: 80%;
+            max-width: 280px;
+        }
+        .roll-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 #a45d23;
+        }
+        .result-area {
+            background: #2a2418;
+            margin-top: 20px;
+            border-radius: 48px;
+            padding: 12px 18px;
+            color: #ffe3a3;
+            font-weight: bold;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        .winner-badge {
+            font-size: 1.6rem;
+            background: gold;
+            color: #2c1b0a;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 40px;
+            margin-top: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #e9dfb2;
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            .dice { width: 75px; height: 75px; font-size: 3rem; border-radius: 20px; }
+            .roll-btn { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="game-panel">
+        <h1>🎲 သျှမ်းကိုးမီး 🎲</h1>
+        <div class="sub">ShanKoeMee · အံစာသုံးလုံး</div>
+
+        <div class="dice-area">
+            <div class="dice" id="dice1">⚀</div>
+            <div class="dice" id="dice2">⚀</div>
+            <div class="dice" id="dice3">⚀</div>
+        </div>
+
+        <button class="roll-btn" id="rollBtn">🎲 တုံးလှိမ့်မယ် 🎲</button>
+
+        <div class="result-area" id="resultArea">
+            ✨ စလိုက်ပါ... တုံးလှိမ့်လိုက်ရုံပါ ✨
+        </div>
+        <footer>● သုံးတူ → ထူးကဲအောင် ● စဉ်လိုက် → အစွမ်းထက် ● တစ်စုံတွဲ + အောင်မြင်မှု</footer>
+    </div>
+</div>
+
+<script>
+    // အနိုင်အရှုံးအဆင့်သတ်မှတ် (ရှမ်းကိုးမီးစည်းမျဉ်း)
+    function getGameResult(dice) {
+        let [a,b,c] = dice;  // [1..6] values
+        let sorted = [a,b,c].sort((x,y)=>x-y);
+        
+        // 1) သုံးလုံးတူ (Three of a kind)
+        if (a === b && b === c) {
+            if (a === 6) return { name: "🎲 ခြောက်တူအကြီး 🎲", point: 1000 };
+            if (a === 1) return { name: "✨ အောင်မြင်ပေါက်စ ✨", point: 950 };
+            return { name: `✦ ${a} သုံးတူ ✦`, point: 900 + a*5 };
+        }
+        
+        // 2) စဉ်လိုက် (Straight) -> 1,2,3 / 2,3,4 / 3,4,5 / 4,5,6
+        let isStraight = (sorted[0]+1 === sorted[1] && sorted[1]+1 === sorted[2]);
+        if (isStraight) {
+            if (sorted[2] === 6) return { name: "🔥 ၄-၅-၆ စဉ်လိုက် (အကြီး) 🔥", point: 800 };
+            if (sorted[0] === 1) return { name: "🌟 ၁-၂-၃ စဉ်လိုက် 🌟", point: 700 };
+            return { name: `📈 ${sorted[0]}-${sorted[1]}-${sorted[2]} စဉ်လိုက်`, point: 650 };
+        }
+        
+        // 3) တစ်စုံတွဲ (One Pair)
+        if (a === b || b === c || a === c) {
+            let pairValue;
+            if (a === b) pairValue = a;
+            else if (b === c) pairValue = b;
+            else pairValue = c;
+            let single = [a,b,c].find(v => v !== pairValue);
+            // စုံတွဲအဆင့် (ထူးခြားမှုအတွက်)
+            let pairBonus = pairValue * 12;
+            if (pairValue === 6) return { name: `🎉 ၆ စုံ (အမြင့်ဆုံး) + ${single} 🎉`, point: 500 + pairBonus };
+            if (pairValue === 1) return { name: `🃏 ၁ စုံ (သေးငယ်) + ${single}`, point: 300 + pairBonus };
+            return { name: `🎭 ${pairValue} တစ်စုံ + ${single} 🎭`, point: 400 + pairBonus };
+        }
+        
+        // 4) သုံးလုံးကွဲ (High card) - ပုံမှန်
+        let highVal = Math.max(a,b,c);
+        let lowSum = a+b+c;
+        if (highVal === 6) return { name: "⚡ ကံမဲ့ဆုံးပေါ်ကောင်း 6 ⚡", point: 150 };
+        if (highVal === 1) return { name: "🍂 သုံးလုံးကွဲ ၁ (အနိမ့်)", point: 50 };
+        return { name: `💧 သုံးကွဲ အလတ်စား (${a},${b},${c})`, point: 100 + lowSum };
+    }
+    
+    // dice value => unicode dice face
+    function diceFace(value) {
+        const faces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+        return faces[value-1];
+    }
+    
+    // random 1-6
+    function rollSingle() {
+        return Math.floor(Math.random() * 6) + 1;
+    }
+    
+    // ဂိမ်းအဓိက လှိမ့်ခြင်း
+    function playShanKoeMee() {
+        // လှိမ့်ထုတ်
+        let val1 = rollSingle();
+        let val2 = rollSingle();
+        let val3 = rollSingle();
+        let diceArray = [val1, val2, val3];
+        
+        // UI အသစ်ပြင်
+        document.getElementById('dice1').innerHTML = diceFace(val1);
+        document.getElementById('dice2').innerHTML = diceFace(val2);
+        document.getElementById('dice3').innerHTML = diceFace(val3);
+        
+        // ရလဒ်တွက်ချက်
+        let result = getGameResult(diceArray);
+        let resultHtml = `
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                <span>🎲 ${val1} ${val2} ${val3}</span>
+                <span style="background:#00000055; padding:4px 14px; border-radius:60px;">${result.name}</span>
+                <span>🏆 ${result.point} မှတ်</span>
+            </div>
+        `;
+        // Special effect for big wins
+        if (result.point >= 800) {
+            resultHtml += `<div class="winner-badge">🎉 အထူးအောင်ပွဲ ချီးမွမ်းအပ်ပါသည် 🎉</div>`;
+        } else if (result.point >= 500) {
+            resultHtml += `<div class="winner-badge">⭐ ကြီးကျယ်ခမ်းနားပါပေါ့ ⭐</div>`;
+        }
+        document.getElementById('resultArea').innerHTML = resultHtml;
+    }
+    
+    // Button နှိပ်ရန်
+    const rollBtn = document.getElementById('rollBtn');
+    rollBtn.addEventListener('click', () => {
+        playShanKoeMee();
+    });
+    
+    // စာမျက်နှာစဖွင့်တစ်ခါလေ့ကျင့်ခန်း
+    playShanKoeMee();
+</script>
+</body>
+</html>
