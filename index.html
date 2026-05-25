@@ -2,34 +2,31 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>6-Reel Slot Machine – ရှမ်းကိုးမီး</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ShanKoeMee - ၉ပေါက်ဖဲဂိမ်း</title>
     <style>
         * {
             box-sizing: border-box;
             user-select: none;
         }
-
         body {
-            background: linear-gradient(145deg, #0b2b1f, #05140e);
+            background: linear-gradient(145deg, #1a4d2a, #0a2a1a);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            font-family: 'Segoe UI', 'Poppins', system-ui;
             padding: 20px;
             margin: 0;
         }
-
-        .slot-machine {
-            background: #2a2418;
-            border-radius: 70px;
-            padding: 30px 20px 40px;
-            box-shadow: 0 30px 35px rgba(0,0,0,0.6), inset 0 1px 3px rgba(255,255,200,0.2);
-            max-width: 950px;
+        .game-container {
+            background: #2e241d;
+            border-radius: 64px;
+            padding: 24px 20px 35px;
+            max-width: 750px;
             width: 100%;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
         }
-
         h1 {
             text-align: center;
             margin: 0 0 5px;
@@ -39,395 +36,325 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-
-        .credit-panel {
-            background: #1f1a10;
-            border-radius: 50px;
-            padding: 8px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 12px;
+        .sub {
+            text-align: center;
+            color: #ffdd99;
             margin-bottom: 25px;
+        }
+        .players {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .player-box {
+            background: #1f1a10;
+            border-radius: 48px;
+            padding: 16px;
             color: #ffecb3;
-            font-weight: bold;
         }
-
-        .credit-box {
+        .player-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: #00000066;
+            display: inline-block;
+            padding: 4px 20px;
+            border-radius: 40px;
+            margin-bottom: 12px;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        .card {
+            background: white;
+            width: 85px;
+            height: 115px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 6px 10px black;
+            color: #2c2c2c;
+        }
+        .card-suit {
+            font-size: 2.2rem;
+        }
+        .points {
             background: black;
-            padding: 5px 20px;
-            border-radius: 40px;
-            font-size: 1.6rem;
-            font-family: monospace;
-            letter-spacing: 2px;
-            color: #ffdd88;
-        }
-
-        .bet-selector {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .bet-btn {
-            background: #3a2a1c;
-            border: none;
-            font-size: 1.2rem;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 1.3rem;
             font-weight: bold;
-            padding: 6px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            color: #f3cf7a;
-            transition: 0.07s linear;
-            box-shadow: 0 2px 5px black;
+            margin-top: 6px;
         }
-
-        .bet-btn.active {
-            background: #f0a500;
-            color: #2c1b0a;
-            box-shadow: 0 0 6px gold;
-        }
-
-        .reels-container {
+        .buttons {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 25px;
+            margin: 20px 0;
             flex-wrap: wrap;
-            margin: 30px 0;
         }
-
-        .reel {
-            background: #fff6e5;
-            width: 90px;
-            height: 120px;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.8rem;
-            font-weight: bold;
-            box-shadow: inset 0 0 0 4px #efc27d, 0 12px 18px black;
-            transition: all 0.08s linear;
-            text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
-        }
-
-        .spin-btn {
-            background: #e67e22;
-            font-size: 2rem;
-            font-weight: bold;
+        button {
+            background: #f39c12;
             border: none;
-            width: 90%;
-            max-width: 320px;
-            padding: 12px 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 10px 28px;
             border-radius: 60px;
             cursor: pointer;
-            display: block;
-            margin: 15px auto;
             transition: 0.05s linear;
-            box-shadow: 0 7px 0 #b45f1b;
-            color: #2e1d0a;
+            box-shadow: 0 5px 0 #b45f1b;
         }
-
-        .spin-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 3px 0 #b45f1b;
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b45f1b;
         }
-
-        .spin-btn:disabled {
+        button:disabled {
             opacity: 0.5;
             transform: none;
             cursor: not-allowed;
         }
-
-        .message-area {
-            background: #1e1a10;
-            border-radius: 50px;
-            padding: 12px 18px;
+        .message {
+            background: #000000aa;
+            border-radius: 48px;
+            padding: 14px;
             text-align: center;
-            color: #f5d742;
             font-weight: bold;
-            margin-top: 20px;
-            font-size: 1.2rem;
+            margin-top: 15px;
+            color: #ffdd88;
         }
-
-        footer {
-            font-size: 0.7rem;
-            text-align: center;
-            color: #bba87a;
-            margin-top: 20px;
+        .restart-btn {
+            background: #5a3a22;
+            color: #ffdd99;
+            box-shadow: 0 4px 0 #3a281a;
+            width: 100%;
         }
-
-        @media (max-width: 680px) {
-            .reel {
-                width: 65px;
-                height: 90px;
-                font-size: 2.5rem;
-            }
-            .credit-box {
-                font-size: 1.2rem;
-            }
-            .bet-btn {
-                font-size: 0.9rem;
-                padding: 4px 12px;
-            }
+        @media (max-width: 550px) {
+            .card { width: 65px; height: 90px; font-size: 1.2rem; }
+            .card-suit { font-size: 1.6rem; }
+            button { font-size: 1rem; padding: 6px 18px; }
         }
     </style>
 </head>
 <body>
-<div class="slot-machine">
-    <h1>🎰 6‑ကွက် ရှမ်းကိုးမီး Slot 🎰</h1>
+<div class="game-container">
+    <h1>🎴 ရှမ်းကိုးမီး 🎴</h1>
+    <div class="sub">ကစားသမားနှင့် အိမ်ရှင် | ၉ပေါက်အနိုင်</div>
 
-    <div class="credit-panel">
-        <div>💰 လက်ကျန်ငွေ</div>
-        <div class="credit-box" id="creditDisplay">2000</div>
-        <div class="bet-selector">
-            <span>🎲 ကြေး:</span>
-            <button class="bet-btn" data-bet="10">10</button>
-            <button class="bet-btn" data-bet="50">50</button>
-            <button class="bet-btn active" data-bet="100">100</button>
-            <button class="bet-btn" data-bet="500">500</button>
+    <div class="players">
+        <div class="player-box">
+            <div class="player-name">🧑 ကစားသမား</div>
+            <div class="cards" id="playerCards"></div>
+            <div class="points" id="playerPoints">မှတ်: -</div>
+        </div>
+        <div class="player-box">
+            <div class="player-name">🏠 အိမ်ရှင်</div>
+            <div class="cards" id="dealerCards"></div>
+            <div class="points" id="dealerPoints">မှတ်: -</div>
         </div>
     </div>
 
-    <div class="reels-container" id="reelsContainer">
-        <!-- 6 reels will be injected by JS -->
+    <div class="buttons">
+        <button id="hitBtn">🎴 ထပ်ယူမယ်</button>
+        <button id="standBtn">✋ ရပ်မယ်</button>
     </div>
+    <button id="restartBtn" class="restart-btn">🔄 ဂိမ်းအသစ်စမယ်</button>
 
-    <button class="spin-btn" id="spinBtn">🌀 လှည့်မယ် (တစ်ကွက်ချင်းရပ်) 🌀</button>
-    <div class="message-area" id="messageBox">ကြေးရွေးပြီး လှည့်ပါ</div>
-    <footer>※ တူညီသင်္ကေတ ≥3 လုံးတွဲ → ဆုရမည်။ 6 လုံးတူဆု ကြီးမား</footer>
+    <div class="message" id="gameMsg">
+        ✨ စလိုက်ပါ... ထပ်ယူ သို့ ရပ် ရွေးပါ ✨
+    </div>
 </div>
 
 <script>
-    // ---------- Slot Symbols ----------
-    const SYMBOLS = ["🍒", "🍋", "🍊", "7️⃣", "💎", "🔔"];
-    const SYMBOL_NAMES = ["Cherry", "Lemon", "Orange", "Seven", "Diamond", "Bell"];
-
-    // Paytable: pattern => multiplier (based on bet)
-    // For simplicity: number of identical symbols (from left to right? we'll check entire set)
-    // We'll compute: count of each symbol, then reward based on longest run? Better: count how many of the same symbol appear.
-    // But real slot uses paylines. We'll do: if any symbol appears 3,4,5,6 times -> win.
-    // Also special "7️⃣" has higher multiplier.
-    function calculateWin(symbols, bet) {
-        let counts = {};
-        for (let s of symbols) {
-            counts[s] = (counts[s] || 0) + 1;
+    // ------------------- ဖဲအင်္ဂါရပ်များ -------------------
+    const SUITS = ['♥️', '♠️', '♦️', '♣️'];
+    const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    
+    // ဖဲတစ်ချပ်ရဲ့အမှတ် (A=1, 2-9=ဂဏန်း, 10/J/Q/K=0)
+    function getCardValue(rank) {
+        if (rank === 'A') return 1;
+        if (rank === '10' || rank === 'J' || rank === 'Q' || rank === 'K') return 0;
+        return parseInt(rank);
+    }
+    
+    // လက်ထဲကဖဲများစုစုပေါင်း (mod 10)
+    function calcPoints(cards) {
+        let sum = 0;
+        for (let card of cards) {
+            sum += getCardValue(card.rank);
         }
-        let maxCount = 0;
-        let bestSymbol = null;
-        for (let [sym, cnt] of Object.entries(counts)) {
-            if (cnt > maxCount) {
-                maxCount = cnt;
-                bestSymbol = sym;
+        return sum % 10;
+    }
+    
+    // Deck တစ်ခုလုံးဖန်တီးခြင်း
+    function createDeck() {
+        let deck = [];
+        for (let suit of SUITS) {
+            for (let rank of RANKS) {
+                deck.push({ suit, rank });
             }
         }
-        if (maxCount < 3) return 0;
-
-        let multiplier = 0;
-        // Base multiplier by count
-        if (maxCount === 3) multiplier = 2;
-        else if (maxCount === 4) multiplier = 5;
-        else if (maxCount === 5) multiplier = 15;
-        else if (maxCount === 6) multiplier = 50;
-
-        // Bonus for rare symbols
-        if (bestSymbol === "7️⃣") multiplier *= 2;
-        if (bestSymbol === "💎") multiplier = Math.floor(multiplier * 1.5);
-
-        return bet * multiplier;
+        return shuffle(deck);
     }
-
-    // Game state
-    let credits = 2000;
-    let currentBet = 100;   // default
-    let isSpinning = false;
-    let reelsCount = 6;
-    let reelSymbols = [];     // store current symbols shown
-    let reelElements = [];
-    let spinInterval = null;
-    let currentReelIndex = 0;
-
-    const creditDisplay = document.getElementById('creditDisplay');
-    const messageBox = document.getElementById('messageBox');
-    const spinBtn = document.getElementById('spinBtn');
-
-    // Initialize DOM: create 6 reels
-    function buildReels() {
-        const container = document.getElementById('reelsContainer');
+    
+    function shuffle(deck) {
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+        return deck;
+    }
+    
+    // UI ပေါ်ဖဲပြခြင်း
+    function renderCards(container, cards, hideFirst = false) {
         container.innerHTML = '';
-        reelElements = [];
-        for (let i = 0; i < reelsCount; i++) {
-            const reelDiv = document.createElement('div');
-            reelDiv.className = 'reel';
-            reelDiv.id = `reel_${i}`;
-            reelDiv.textContent = SYMBOLS[0];  // default cherry
-            container.appendChild(reelDiv);
-            reelElements.push(reelDiv);
-        }
-    }
-
-    // Update all reels UI from reelSymbols array
-    function updateReelsUI() {
-        for (let i = 0; i < reelsCount; i++) {
-            if (reelSymbols[i] !== undefined) {
-                reelElements[i].textContent = reelSymbols[i];
+        cards.forEach((card, idx) => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            if (hideFirst && idx === 0 && !cards.revealed) {
+                cardDiv.innerHTML = `<div style="font-size:2rem;">❓</div><div>??</div>`;
+            } else {
+                cardDiv.innerHTML = `<div class="card-suit">${card.suit}</div><div>${card.rank}</div>`;
             }
-        }
-    }
-
-    // Random symbol
-    function randomSymbol() {
-        return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-    }
-
-    // Animate one reel (fast random change, then stop on finalSymbol)
-    function animateReelStop(reelIndex, finalSymbol, durationMs = 200, steps = 12) {
-        return new Promise((resolve) => {
-            const reelDiv = reelElements[reelIndex];
-            let step = 0;
-            const interval = setInterval(() => {
-                // show random symbol during animation
-                reelDiv.textContent = randomSymbol();
-                step++;
-                if (step >= steps) {
-                    clearInterval(interval);
-                    reelDiv.textContent = finalSymbol;
-                    resolve();
-                }
-            }, durationMs / steps);
+            container.appendChild(cardDiv);
         });
     }
-
-    // Sequential spin: stop one by one
-    async function startSequentialSpin(finalSymbols) {
-        for (let i = 0; i < reelsCount; i++) {
-            // animate current reel
-            await animateReelStop(i, finalSymbols[i], 180, 10);
-            // small delay between reels
-            await new Promise(r => setTimeout(r, 80));
-        }
-        // all stopped
-        reelSymbols = [...finalSymbols];
-        updateReelsUI();
-
-        // calculate win
-        const winAmount = calculateWin(reelSymbols, currentBet);
-        if (winAmount > 0) {
-            credits += winAmount;
-            messageBox.innerHTML = `🎉 အနိုင်! ရရှိငွေ ${winAmount} 🎉 (${reelSymbols.join(' ')})`;
+    
+    function revealDealerCards() {
+        dealerCards.revealed = true;
+        renderCards(document.getElementById('dealerCards'), dealerCards, false);
+        let dPoint = calcPoints(dealerCards);
+        document.getElementById('dealerPoints').innerHTML = `မှတ်: ${dPoint}`;
+    }
+    
+    // Game state
+    let deck = [];
+    let playerCards = [];
+    let dealerCards = [];
+    let gameActive = true;
+    let playerStood = false;
+    
+    function updateUI() {
+        // player
+        renderCards(document.getElementById('playerCards'), playerCards, false);
+        let pPoints = calcPoints(playerCards);
+        document.getElementById('playerPoints').innerHTML = `မှတ်: ${pPoints}`;
+        
+        // dealer (hide first if needed)
+        let hideFirst = (gameActive && !playerStood && dealerCards.length > 0);
+        renderCards(document.getElementById('dealerCards'), dealerCards, hideFirst);
+        if (!hideFirst) {
+            let dPoints = calcPoints(dealerCards);
+            document.getElementById('dealerPoints').innerHTML = `မှတ်: ${dPoints}`;
         } else {
-            messageBox.innerHTML = `😞 မအောင်။ နောက်တစ်ခါ ကံစမ်းပါ။ (${reelSymbols.join(' ')})`;
+            document.getElementById('dealerPoints').innerHTML = `မှတ်: ?`;
         }
-        updateCreditUI();
-
-        isSpinning = false;
-        spinBtn.disabled = false;
-        if (credits <= 0) {
-            messageBox.innerHTML = "💰 ငွေကုန်သွားပြီ။ စာမျက်နှာ refresh လုပ်ပါ။ 💰";
-            spinBtn.disabled = true;
+        
+        document.getElementById('hitBtn').disabled = (!gameActive || playerStood);
+        document.getElementById('standBtn').disabled = (!gameActive || playerStood);
+        
+        // auto-stand if player reaches 9
+        if (gameActive && !playerStood && calcPoints(playerCards) === 9) {
+            stand();
         }
     }
-
-    // Main spin action
-    function spin() {
-        if (isSpinning) {
-            messageBox.innerHTML = "ခေတ္တစောင့်ပါ... လှည့်နေဆဲ။";
-            return;
-        }
-        if (credits < currentBet) {
-            messageBox.innerHTML = `လက်ကျန်ငွေ မလုံလောက်ပါ။ လိုအပ်: ${currentBet}`;
-            return;
-        }
-
-        isSpinning = true;
-        spinBtn.disabled = true;
-
-        // deduct bet
-        credits -= currentBet;
-        updateCreditUI();
-
-        // generate final symbols (random)
-        const finalSymbols = [];
-        for (let i = 0; i < reelsCount; i++) {
-            finalSymbols.push(randomSymbol());
-        }
-
-        // start fast spinning on all reels first? Actually we want them all spinning, then stop sequentially.
-        // Better: start all reels spinning fast, then stop one by one.
-        // We'll start an interval that randomly updates all reels rapidly, then clear and stop sequentially.
-        let fastSpinInterval = setInterval(() => {
-            for (let i = 0; i < reelsCount; i++) {
-                if (reelElements[i]) reelElements[i].textContent = randomSymbol();
-            }
-        }, 50);
-
-        // after a short "all spinning" effect, begin sequential stop
-        setTimeout(() => {
-            clearInterval(fastSpinInterval);
-            // now start sequential stop with predetermined final symbols
-            startSequentialSpin(finalSymbols);
-        }, 300);
+    
+    function setMessage(msg) {
+        document.getElementById('gameMsg').innerHTML = msg;
     }
-
-    function updateCreditUI() {
-        creditDisplay.innerText = credits;
-    }
-
-    // Bet selector
-    function initBetButtons() {
-        const btns = document.querySelectorAll('.bet-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (isSpinning) return;
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentBet = parseInt(btn.getAttribute('data-bet'), 10);
-                messageBox.innerHTML = `ကြေး ${currentBet} ရွေးထားပါသည်။`;
-            });
-        });
-    }
-
-    // initial random symbols
-    function randomInit() {
-        reelSymbols = [];
-        for (let i=0; i<reelsCount; i++) {
-            reelSymbols.push(randomSymbol());
+    
+    // ထပ်ယူ
+    function hit() {
+        if (!gameActive || playerStood) return;
+        if (deck.length === 0) deck = createDeck();
+        let newCard = deck.pop();
+        playerCards.push(newCard);
+        updateUI();
+        let points = calcPoints(playerCards);
+        if (points === 9) {
+            setMessage("🎉 ၉ပေါက်! အနိုင်ရဖို့ ရပ်လိုက်ပါ။ 🎉");
+            stand();
         }
-        updateReelsUI();
     }
-
-    // restart manually if credits zero (refresh hack)
-    function checkCredit() {
-        if (credits <= 0) {
-            if (confirm("ငွေကုန်သွားပြီ။ ပြန်စမလား?")) {
-                credits = 2000;
-                currentBet = 100;
-                updateCreditUI();
-                randomInit();
-                messageBox.innerHTML = "ပြန်စပြီ။ ကြေးရွေးပါ။";
-                spinBtn.disabled = false;
-                isSpinning = false;
-                // reset active bet
-                document.querySelectorAll('.bet-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector('.bet-btn[data-bet="100"]').classList.add('active');
+    
+    // ရပ်ပြီး အိမ်ရှင်အလှည့်
+    function stand() {
+        if (!gameActive || playerStood) return;
+        playerStood = true;
+        setMessage("ခင်ဗျား ရပ်လိုက်ပြီ။ အိမ်ရှင်အလှည့်...");
+        updateUI();
+        dealerTurn();
+    }
+    
+    function dealerTurn() {
+        let playerPoint = calcPoints(playerCards);
+        
+        function step() {
+            if (!gameActive) return;
+            let dealerPoint = calcPoints(dealerCards);
+            // အိမ်ရှင် စည်းမျဉ်း: ကစားသမားအမှတ်အောက်နဲ့ 9 မရောက်သေးရင် ဆက်ယူ
+            if (dealerPoint < playerPoint && dealerPoint < 9) {
+                if (deck.length === 0) deck = createDeck();
+                let newCard = deck.pop();
+                dealerCards.push(newCard);
+                updateUI();
+                setTimeout(step, 350);
+            } else {
+                endGame();
             }
         }
+        step();
     }
-
-    // Add event listener to spin button
-    spinBtn.addEventListener('click', () => {
-        spin();
-        setTimeout(checkCredit, 500);
-    });
-
-    // Build UI
-    buildReels();
-    randomInit();
-    initBetButtons();
-    updateCreditUI();
-    messageBox.innerHTML = "ကြေးရွေးပြီး လှည့်ပါ (တစ်ကွက်ချင်း ရပ်မယ်)";
+    
+    function endGame() {
+        gameActive = false;
+        playerStood = true;
+        revealDealerCards();
+        let pPoint = calcPoints(playerCards);
+        let dPoint = calcPoints(dealerCards);
+        let msg = "";
+        if (pPoint > dPoint) msg = "🎉 ခင်ဗျားအနိုင်! (၉ပေါက်အနိုင်) 🎉";
+        else if (pPoint < dPoint) msg = "😵 အိမ်ရှင်အနိုင် ... နောက်တစ်ခါကြိုးစားပါ";
+        else msg = "🤝 သရေ (အမှတ်တူ)";
+        if (pPoint === 9) msg = "🏆 ကြီးကျယ်တဲ့ ၉ပေါက် အနိုင် 🏆";
+        setMessage(msg);
+        updateUI();
+    }
+    
+    function restartGame() {
+        deck = createDeck();
+        playerCards = [];
+        dealerCards = [];
+        gameActive = true;
+        playerStood = false;
+        // အစပိုင်း ၂ ချပ်စီ
+        for (let i = 0; i < 2; i++) {
+            playerCards.push(deck.pop());
+            dealerCards.push(deck.pop());
+        }
+        dealerCards.revealed = false;
+        updateUI();
+        setMessage("ဂိမ်းအသစ်။ ထပ်ယူ / ရပ် ရွေးပါ။");
+        if (calcPoints(playerCards) === 9) {
+            setMessage("၉ပေါက်!! အိမ်ရှင်စောင့်ပါ။");
+            stand();
+        }
+    }
+    
+    // Event listeners
+    document.getElementById('hitBtn').onclick = hit;
+    document.getElementById('standBtn').onclick = stand;
+    document.getElementById('restartBtn').onclick = () => restartGame();
+    
+    // စတင်မယ်
+    restartGame();
 </script>
 </body>
 </html>
